@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20200719053535_AddAuthentication.cs" />
+    <Compile Remove="Migrations\20200719053535_AddAuthentication.Designer.cs" />
+    <Compile Remove="Migrations\20200722100904_AddCommentTable.cs" />
+    <Compile Remove="Migrations\20200722100904_AddCommentTable.Designer.cs" />
+    <Compile Remove="Migrations\20200722101452_AddCommentTable.cs" />
+    <Compile Remove="Migrations\20200722101452_AddCommentTable.Designer.cs" />
+    <Compile Remove="Migrations\20200728131956_AddOrderTable.cs" />
+    <Compile Remove="Migrations\20200728131956_AddOrderTable.Designer.cs" />
+    <Compile Remove="Migrations\20200729080532_AddUserIdToOrderTable.cs" />
+    <Compile Remove="Migrations\20200729080532_AddUserIdToOrderTable.Designer.cs" />
+    <Compile Remove="Migrations\20200730050432_addPaymentGatewayResponseTable.cs" />
+    <Compile Remove="Migrations\20200730050432_addPaymentGatewayResponseTable.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MailKit" Version="2.8.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Syncfusion.Pdf.Net.Core" Version="18.2.0.47" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OnlineShoping.Models\OnlineShoping.Models.csproj" />
+  </ItemGroup>
+
+</Project>

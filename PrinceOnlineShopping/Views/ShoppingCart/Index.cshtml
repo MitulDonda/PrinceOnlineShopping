@@ -1,0 +1,119 @@
+﻿@model ShoppingCartViewModel
+@{
+    var Folderpath = "../Images/";
+    ViewData["Title"] = "Cart";
+    ViewData["PageName"] = "Cart";
+}
+
+<div class="breacrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text product-more">
+                    <a asp-action="index" asp-controller="Home"><i class="fa fa-home"></i> Home</a>
+                    <a asp-action="Index" asp-controller="Shop">Shop</a>
+                    <span>Shopping Cart</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="shopping-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="cart-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th class="p-name">Product Name</th>
+                                <th>Discount</th>
+                                <th>Price</th>
+
+                                <th>Total</th>
+                                <th><i class="ti-close"></i></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (@Model.ProductList.Count == 0)
+                            {
+                                <tr>
+                                    <td style="padding-top:34px">No Product In Cart. Plase add Product to Cart.<a asp-action="index" asp-controller="Shop">Home</a></td>
+
+                                </tr>
+                            }
+                            else
+                            {
+                                @for (int i = 0; i < Model.ProductList.Count; i++)
+                                {
+                                    var PhotoPath = @Folderpath + Model.ProductList[i].productImage.First().FileName;
+                                    <tr>
+
+                                        <td class="cart-pic first-row"><img src="@PhotoPath" alt="" style="width:85%;height:auto;"></td>
+
+
+
+                                        <td class="cart-title first-row">
+                                            <h5>@Model.ProductList[i].shortDescription</h5>
+                                        </td>
+                                        <td class="p-price first-row">₹@Model.ProductList[i].price.ToString("0.00") (@Model.ProductList[i].discount % off)</td>
+
+                                        <td class="p-price first-row"> ₹@Model.ProductList[i].discountPrice.ToString("0.00")</td>
+
+                                        <td class="total-price first-row">₹@Model.ProductList[i].discountPrice.ToString("0.00")</td>
+                                        <td class="close-td first-row"><i class="ti-close" onclick=RemoveFromCart(@Model.ProductList[i].productId)></i></td>
+                                    </tr>
+                                }
+                            }
+
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="cart-buttons">
+                            <a asp-action="index" asp-controller="Shop" class="primary-btn ">Continue shopping</a>
+
+                        </div>
+
+                        <div class="discount-coupon">
+                            <h6>Discount Codes</h6>
+                            <form class="coupon-form">
+                                <input type="text" placeholder="Enter your codes">
+                                <button class="site-btn coupon-btn">Apply</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 offset-lg-4">
+                        <div class="proceed-checkout">
+                            <ul>
+                                <li class="subtotal">Subtotal <span>₹ @Model.totalPrice.ToString("0.00")</span></li>
+                                <li class="cart-total">Total <span>₹ @Model.totalPrice.ToString("0.00")</span></li>
+                            </ul>
+                            <a asp-action="Index" asp-controller="CheckOut" class="proceed-btn">PROCEED TO CHECK OUT</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts {
+    <script>
+
+        function RemoveFromCart(id) {
+            $.post("/AddToCart/Remove", {
+                "product": id
+            },
+                function (data) {
+                       window.location = '@Url.Action("Index", "ShoppingCart")';
+
+                });
+            }
+    </script>
+}

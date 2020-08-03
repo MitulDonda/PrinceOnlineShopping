@@ -1,0 +1,223 @@
+﻿
+
+
+
+
+@media only screen and (max-width: 600px) {
+
+}
+
+
+
+
+@fab-color: #03A9F4;
+@fab-size: 64px;
+@fab-margin: 1 / 4 * 3 * @fab-size;
+@fab-child-size: 1 / 3 * 2 * @fab-size;
+@fab-child-margin: (@fab-size - @fab-child-size) / 2 + @fab-margin;
+
+.fab {
+    background: @fab-color;
+    width: @fab-size;
+    height: @fab-size;
+    border-radius: 50%;
+    text-align: center;
+    color: #FFF;
+    box-shadow: 0px 0px 3px rgba(0,0,0,0.5),3px 3px 3px rgba(0,0,0,0.25);
+    position: fixed;
+    bottom: @fab-margin;
+    right: @fab-margin;
+    font-size: 2.6667em;
+    display: inline-block;
+    cursor: default;
+}
+
+    .fab span {
+        vertical-align: middle;
+    }
+
+    .fab.child {
+        right: @fab-child-margin;
+        width: @fab-child-size;
+        height: @fab-child-size;
+        display: none;
+        opacity: 0;
+        font-size: 2em;
+    }
+
+.black() when (lightness(@fab-color) > 50%) {
+    .fab
+
+{
+    color: #000;
+}
+
+}
+
+.black();
+
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ECECEC;
+    opacity: 0.9;
+    display: none;
+}
+
+
+.boxadded {
+    width: 100%;
+    box-shadow: 0px 0px 0px 1px #eee;
+    padding: 1rem 1rem 1rem 1rem;
+    border-radius: 4px;
+    text-align: center;
+}
+.product-grid {
+  width: 60em;
+  margin: 2rem auto;
+}
+.product-grid.product-grid--flexbox .product-grid__wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+.product-grid.product-grid--flexbox .product-grid__title {
+  height: auto;
+}
+.product-grid.product-grid--flexbox .product-grid__title:after {
+  display: none;
+}
+.product-grid__wrapper {
+  margin-left: -1rem;
+  margin-right: -1rem;
+}
+
+.product-grid__product {
+  padding: 1rem;
+  position: relative;
+  cursor: pointer;
+  background: #fff;
+  border-radius: 4px;
+}
+.product-grid__product:hover {
+  box-shadow: 0px 0px 0px 1px #eee;
+  z-index: 50;
+}
+.product-grid__product:hover .product-grid__extend {
+  display: block;
+}
+.product-grid__img-wrapper {
+  width: 100%;
+  text-align: center;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+ 
+}
+.product-grid__img {
+  max-width: 100%;
+  height: auto;
+  max-height: 100%;
+}
+.product-grid__title {
+    margin-top: .875rem;
+    display: block;
+    font-size: 1.125em;
+    color: #222;
+    height: 1.5em;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    text-align: center;
+}
+.product-grid__title:after {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 2.4em;
+  height: 1.5em;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), white 50%);
+}
+.product-grid__price {
+    display: block;
+    color: #E91E63;
+    font-weight: bold;
+    letter-spacing: .4px;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+}
+.product-grid__extend-wrapper {
+    position: relative;
+    margin-left: 20px;  
+}
+.product-grid__extend {
+    display: none;
+    position: absolute;
+    padding: 0 1rem 1rem 1rem;
+    margin: .4375rem -1rem 0;
+    box-shadow: 0px 0px 0px 1px #eee;
+    background: #fff;
+    border-radius: 0 0 4px 4px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    text-align: center;
+}
+.boxadded {
+    width: 100%;
+    box-shadow: 0px 0px 0px 1px #eee;
+    padding: 1rem 1rem 1rem 1rem;
+    border-radius: 4px;
+    text-align: center;
+}
+.product-grid__extend:before {
+  content: "";
+  height: .875rem;
+  width: 100%;
+  position: absolute;
+  top: -.4375rem;
+  left: 0;
+  background: #fff;
+}
+.product-grid__description {
+    font-size: .875em;
+    margin-top: .4375rem;
+    margin-bottom: 0;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+}
+.product-grid__btn {
+  display: inline-block;
+  font-size: .875em;
+  color: #777;
+  background: #eee;
+  padding: .5em .625em;
+  margin-top: .875rem;
+  margin-right: .625rem;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.product-grid__btn i.fa {
+  margin-right: .3125rem;
+}
+.product-grid__add-to-cart {
+  color: #fff;
+  background: #E91E63;
+}
+.product-grid__add-to-cart:hover {
+  background: #ee4c83;
+}
+.product-grid__view {
+  color: #777;
+  background: #eee;
+}
+.product-grid__view:hover {
+  background: white;
+}

@@ -1,0 +1,107 @@
+﻿@model List<Order>
+@{
+    ViewData["Title"] = "Your Order";
+    ViewData["PageName"] = "Your Order";
+    var Folderpath = "../Images/";
+}
+
+<div class="container">
+    @if (ViewBag.msg != null)
+    {
+        <h4> <span class="alert-success"> @ViewBag.msg</span></h4>
+    }
+
+    @if (@Model.Count == 0)
+    {
+        <table>
+            <tr>
+                <td style="padding-top:34px">No Product Ordered. Kindly Shop.<a asp-action="index" asp-controller="Shop">Home</a></td>
+            </tr>
+        </table>
+    }
+    else
+    {
+
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <form asp-action="DeleteOrder" asp-route-orderid="@Model[i].OrderId" method="post">
+                <div class="card" style="min-width: 18rem; margin-top:10px">
+                    <div class="card-header">
+                        <h5 class="text-success"> @Model[i].OrderId  &nbsp;&nbsp; Date: @Model[i].OrderPlacedDate &nbsp;&nbsp; Total:  @Model[i].OrderTotal</h5>
+                    </div>
+                    <div class="card-body ">
+                        <div class="cart-table">
+                            <table>
+                                @for (int j = 0; j < Model[i].OrderLines.Count; j++)
+
+                                {
+                                    var PhotoPath = Folderpath + @Model[i].OrderLines[j].Product.ProductImage.First().FileName.ToString();
+                                    var discountPrice = @Model[i].OrderLines[j].Product.Price - @Model[i].OrderLines[j].Product.Price * @Model[i].OrderLines[j].Product.Discount / 100;
+
+                                    <tr>
+                                        <td class="cart-pic first-row"><img src="@PhotoPath" alt="" style="width:170px;height:170px"></td>
+
+                                        <td class="cart-title first-row">
+                                            <h5> @Model[i].OrderLines[j].Product.ShortDescription</h5>
+                                        </td>
+                                        <td class="p-price first-row">₹ @Model[i].OrderLines[j].Product.Price.ToString("0.00") ( @Model[i].OrderLines[j].Product.Discount % off)</td>
+
+                                        <td class="p-price first-row"> ₹@discountPrice.ToString("0.00")</td>
+
+
+                                    </tr>
+                                }
+
+                            </table>
+                        </div>
+
+                    </div>
+                    @if (@Model[i].isConfirm == false)
+                    {
+                        <div class="card-footer text-center">
+                            <span id="confirmDeleteSpan_@Model[i].OrderId" style="display:none">
+                                <span>Are you sure you want to cancel your order?</span>
+                                <button type="submit" class="btn btn-danger">Yes</button>
+                                <a class="btn btn-primary" style="color:white"
+                                   onclick="confirmDelete('@Model[i].OrderId', false)">No</a>
+                            </span>
+
+                            <span id="deleteSpan_@Model[i].OrderId">
+                                <a class="btn btn-danger" style="color:white"
+                                   onclick="confirmDelete('@Model[i].OrderId', true)">Cancel Order</a>
+                            </span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="card-footer">
+                            <span class="text-danger">
+                                your Order is confim. You are not able to cancel this Order.
+                            </span>
+                        </div>
+                    }
+                </div>
+            </form>
+        }
+
+    }
+</div>
+
+
+@section Scripts {
+    <script>
+        function confirmDelete(uniqueId, isDeleteClicked) {
+            var deleteSpan = 'deleteSpan_' + uniqueId;
+            var confirmDeleteSpan = 'confirmDeleteSpan_' + uniqueId;
+
+            if (isDeleteClicked) {
+                $('#' + deleteSpan).hide();
+                $('#' + confirmDeleteSpan).show();
+            } else {
+                $('#' + deleteSpan).show();
+                $('#' + confirmDeleteSpan).hide();
+            }
+        }
+    </script>
+
+}

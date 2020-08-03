@@ -1,0 +1,352 @@
+﻿@inject SignInManager<ApplicationUser> signInManager;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Prince Digital</title>
+
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap-grid.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap-reboot.css" rel="stylesheet" />
+    <link href="~/css/elegant-icons.css" rel="stylesheet" />
+    <link href="~/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/css/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/css/nice-select.css" rel="stylesheet" />
+    <link href="~/css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/css/slicknav.min.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/themify-icons.css" rel="stylesheet" />
+    <link href="~/css/snackbar.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+    <link href="~/css/index.css" rel="stylesheet" />
+
+    @*<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+        asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+        asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />*@
+    <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+
+</head>
+
+
+
+<body>
+
+    @{
+        var PageName = ViewData["PageName"];
+    }
+    <header class="header-section ">
+        <div id="MobileHeader" class="d-block d-md-none">
+
+            <nav class="navbar navbar-expand-md navbar-light bg-light ">
+                <a asp-controller="Home" asp-action="Index">
+                    <img src="~/images/logo.png" alt="" style="height:55px;">
+                </a>
+
+               
+
+                @await Component.InvokeAsync("PageCount", new { device = "Mobile" })
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse1">
+                    <div class="navbar-nav">
+                        <a asp-action="Index" asp-controller="Home" class="nav-item nav-link " style="text-align:center">Home</a>
+                        <a asp-action="Index" asp-controller="Shop" class="nav-item nav-link">Shop</a>
+                        <a href="#" class="nav-item nav-link">Profile</a>
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link" id="MobCollectionlink" data-toggle="dropdown">Collection<i class="fa fa-arrow-down"></i></a>
+                            <div class="dropdown-menu" id="mobColletionList">
+                                <a asp-action="Index" asp-controller="Collection" asp-route-type="Male" class="dropdown-item">Men's</a>
+                                <a asp-action="Index" asp-controller="Collection" asp-route-type="Female" class="dropdown-item">Women's</a>
+                                <a asp-action="Index" asp-controller="Collection" asp-route-type="Child" class="dropdown-item">Kid's</a>
+                            </div>
+                        </div>
+                        <a asp-action="Index" asp-controller="Blog" class="nav-item nav-link">Blog</a>
+                        <a asp-action="Index" asp-controller="ContactUs" class="nav-item nav-link">Contact US</a>
+
+                        <partial name="_LoginPartialMobile" />
+                    </div>
+
+                </div>
+            </nav>
+        </div>
+        <div class="container  d-none d-md-block">
+            <div class="inner-header">
+                <div class="row">
+                    <div class="col-lg-2 col-md-2 col-4">
+                        <div class="logo" style="padding:0px">
+                            <a asp-controller="Home" asp-action="Index">
+                                <img src="~/images/logo.png" alt="" style="height:55px">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-7 col-md-7 d-none d-md-block">
+                        <div class="advanced-search">
+                            <button type="button" class="category-btn">All Categories</button>
+                            <div class="input-group">
+                                <input type="text" placeholder="What do you need?">
+                                <button type="button"><i class="ti-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 text-right col-md-3 col-6 offset-1 offset-md-0">
+                        <ul class="nav-right">
+                            <li class="heart-icon">
+                                <a>
+                                    <i class="icon_heart_alt"></i>
+                                    <span>1</span>
+                                </a>
+                            </li>
+                            @await Component.InvokeAsync("PageCount", new { device= "Web"})
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </header>
+    <div style="position: -webkit-sticky; position: sticky; top: 0;  z-index: 10">
+        <div class="nav-item ">
+            <div class="container">
+                <div class="nav-depart">
+                    <div class="depart-btn">
+                        <i class="ti-menu"></i>
+                        <span>All departments</span>
+                        <ul class="depart-hover">
+                            <li class="active"><a asp-controller="Collection" asp-action="Index" asp-route-type="Female">Women’s Clothing</a></li>
+                            <li><a asp-controller="Collection" asp-action="Index" asp-route-type="Male">Men’s Clothing</a></li>
+                            <li><a asp-controller="Collection" asp-action="Index" asp-route-type="Child">Kid's Clothing</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <nav class="nav-menu mobile-menu">
+                    <ul>
+                        @{
+                            <li class="@((string)PageName == "Home" ? "active" : "")">
+                                <a asp-action="Index" asp-controller="Home">Home</a>
+                            </li>
+                        }
+                        <li class="@((string)PageName == "Shop" ? "active" : "")"><a asp-action="Index" asp-controller="Shop">Shop</a></li>
+                        <li class="@((string)PageName == "Collection" ? "active" : "")" id="CollectionLink">
+                            <a href="#">Collection</a>
+                            <ul class="dropdown">
+                                <li><a asp-action="Index" asp-controller="Collection" asp-route-type="Male">Men's</a></li>
+                                <li><a asp-action="Index" asp-controller="Collection" asp-route-type="Female">Women's</a></li>
+                                <li><a asp-action="Index" asp-controller="Collection" asp-route-type="Child">Kid's</a></li>
+                            </ul>
+                        </li>
+                        <li class="@((string)PageName == "Blog" ? "active" : "")"><a asp-action="Index" asp-controller="Blog">Blog</a></li>
+                        <li class="@((string)PageName == "ContactUs" ? "active" : "")"><a asp-action="Index" asp-controller="ContactUs">Contact</a></li>
+
+                        <partial name="_LoginPartial" />
+
+                    </ul>
+                </nav>
+                @*  <div id="mobile-menu-wrap"></div>*@
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="snackbar" class="alert alert-success">Added to cart</div>
+    <div style="padding-bottom: 50px;">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    @if ((string)PageName != "Cart")
+    {
+        <div class="zoom">
+            <a class="zoom-fab zoom-btn-large" id="zoomBtn" asp-action="Index" asp-controller="ShoppingCart"><i class="fa fa-cart-plus" style="font-size:24px"></i></a>
+        </div>
+    }
+    @if (this.ViewContext.RouteData.Values["controller"].ToString() != "Account")
+    {
+        <div class="partner-logo">
+            <div class="container">
+                <div class="logo-carousel owl-carousel">
+                    <div class="logo-item">
+                        <div class="tablecell-inner">
+                            <img src="~/img/logo-carousel/logo-1.png" alt="">
+                        </div>
+                    </div>
+                    <div class="logo-item">
+                        <div class="tablecell-inner">
+                            <img src="~/img/logo-carousel/logo-2.png" alt="">
+                        </div>
+                    </div>
+                    <div class="logo-item">
+                        <div class="tablecell-inner">
+                            <img src="~/img/logo-carousel/logo-3.png" alt="">
+                        </div>
+                    </div>
+                    <div class="logo-item">
+                        <div class="tablecell-inner">
+                            <img src="~/img/logo-carousel/logo-4.png" alt="">
+                        </div>
+                    </div>
+                    <div class="logo-item">
+                        <div class="tablecell-inner">
+                            <img src="~/img/logo-carousel/logo-5.png" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <!-- Partner Logo Section End -->
+    <!-- Footer Section Begin -->
+
+
+    <footer class="footer-section">
+
+        @if (this.ViewContext.RouteData.Values["controller"].ToString() != "Account")
+        {
+            <div class="container" style="padding-bottom: 40px;">
+                <div class="row" style=" padding-top: 10px;">
+                    <div class="col-lg-3">
+                        <div class="footer-left">
+                            <div class="footer-logo">
+                                <a asp-controller="Home" asp-action="Index"><img src="~/img/footer-logo.png" alt="" style="height:55px"></a>
+                            </div>
+                            <ul>
+                                <li>Address: Parvat Patiya, Surat Gujrat</li>
+                                <li>Phone: +91 9714672484</li>
+                                <li>Email: Princedigitalsaree@gmail.com</li>
+                            </ul>
+                            <div class="footer-social">
+                                <a href="https://www.facebook.com/princeesaree" target="_blank"><i class="fa fa-facebook"></i></a>
+                                <a href="https://www.facebook.com/princeesaree" target="_blank"><i class="fa fa-instagram"></i></a>
+                                <a href="https://www.facebook.com/princeesaree" target="_blank"><i class="fa fa-twitter"></i></a>
+                                <a href="https://www.facebook.com/princeesaree" target="_blank"><i class="fa fa-pinterest"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 offset-lg-1">
+                        <div class="footer-widget">
+                            <h5>Information</h5>
+                            <ul>
+                                <li><a href="https://www.facebook.com/princeesaree" target="_blank">About Us</a></li>
+                                <li><a asp-action="Index" asp-controller="CheckOut">Checkout</a></li>
+                                <li><a asp-action="Index" asp-controller="ContactUs">Contact</a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="footer-widget">
+                            <h5>My Account</h5>
+                            <ul>
+                                <li><a asp-action="YourOrders" asp-controller="Account">My Order</a></li>
+                                <li><a asp-action="Index" asp-controller="ShoppingCart">Shopping Cart</a></li>
+                                <li><a asp-action="Index" asp-controller="Shop">Shop</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="newslatter-item">
+                            <h5>Join Our Newsletter Now</h5>
+                            <p>Get E-mail updates about our latest shop and special offers.</p>
+                            <form action="#" class="subscribe-form">
+                                <input type="text" placeholder="Enter Your Mail">
+                                <button type="button">Subscribe</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="copyright-reserved" style="">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="copyright-text">
+                            Copyright &copy;
+                            <script>document.write(new Date().getFullYear());</script> All rights reserved | Prince Digital <i class="fa fa-heart-o" aria-hidden="true"></i>
+
+                        </div>
+                        <div class="payment-pic d-none d-md-block">
+                            <img src="~/img/payment-method.png" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+
+
+
+    <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/lib/jquery-validate/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/js/site.js"></script>
+    <script src="~/js/jquery-3.3.1.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/jquery-ui.min.js"></script>
+    <script src="~/js/jquery.countdown.min.js"></script>
+    <script src="~/js/jquery.nice-select.min.js"></script>
+    <script src="~/js/jquery.zoom.min.js"></script>
+    <script src="~/js/jquery.dd.min.js"></script>
+    <script src="~/js/jquery.slicknav.js"></script>
+    <script src="~/js/owl.carousel.min.js"></script>
+    <script src="~/js/main.js"></script>
+
+    @*<environment exclude="Development">
+            <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+                    asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                    asp-fallback-test="window.jQuery"
+                    crossorigin="anonymous"
+                    integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+            </script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+                    asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                    asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                    crossorigin="anonymous"
+                    integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">
+            </script>
+            <script src="~/js/site.min.js" asp-append-version="true"></script>
+        </environment>*@
+
+
+    @RenderSection("Scripts", required: false)
+    <script>
+        $(".slicknav_menutxt").html("");
+
+        function myFunction(url) {
+            window.location.href = url;
+        }
+        $(".navbar-toggler").click(function () {
+                $('#navbarCollapse1').fadeToggle("slow");
+           
+        });
+        $("#MobCollectionlink").click(function () {
+            $('#mobColletionList').fadeToggle();
+            $("i", this).toggleClass("fa-arrow-down fa-arrow-right");
+        });
+        $("#MobUserlink").click(function () {
+            $('#mobUserList').fadeToggle();
+            $("i", this).toggleClass("fa-arrow-down fa-arrow-right");
+        });
+    </script>
+    <script src="~/js/Custom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.5.0/velocity.min.js"></script>
+    <script src="~/js/index.js"></script>
+   
+</body>
+</html>

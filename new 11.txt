@@ -1,0 +1,16 @@
+google key
+client Id :  679999282386-po11u68c9lda3haldrkav71qab00tqvu.apps.googleusercontent.com
+Secret key:  MIl5X5UTW8-Rt6SGFNqDqWky
+
+
+
+mail.example.com:: v=spf1 include:113411b17.ppspf.net ~all
+
+pepipost._domainkey.mail.example.com ::  k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDLMMExLiGRqzJkNdNIjUnLX7JL0wjbwwENDoXgJIBisIsrofLPetZM401dioNU8k/Qp6nIyi5oioyZh+1jDXoCPFa4nLGRNj3Nz785N7b76aTtHmy2wTgR2LFS/Yw5/iyzhyrWsIyINyyHs77EoCwSOQjJfhFxb6SmifLN51IIvwIDAQAB
+
+Stmp username= princedigitalsaree
+smtp password =princedigitalsaree_f50d083027e080565d70c57c6b680431
+
+smtp server : smtp.pepipost.com
+
+api key: f50d083027e080565d70c57c6b680431

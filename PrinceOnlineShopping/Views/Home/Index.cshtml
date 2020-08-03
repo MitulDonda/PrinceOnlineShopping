@@ -1,0 +1,290 @@
+﻿@model HomeIndexViewModel
+@{
+    ViewData["Title"] = "Home";
+    ViewData["PageName"] = "Home";
+}
+
+
+@if (ViewBag.Info != null)
+{
+    <h4 class="text-success">@ViewBag.Info</h4>
+    <hr />
+}
+
+<!-- Page Preloder -->
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+
+<section class="hero-section">
+    <div class="hero-items owl-carousel">
+        <div class="single-hero-items set-bg" data-setbg="../img/hero-1.jpg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-5">
+                        <span>Bag,kids</span>
+                        <h1>Black friday</h1>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                            incididunt ut labore et dolore
+                        </p>
+                        <a asp-action="index" asp-controller="Shop" class="primary-btn">Shop Now</a>
+                    </div>
+                </div>
+                <div class="off-card">
+                    <h2>Sale <span>50%</span></h2>
+                </div>
+            </div>
+        </div>
+        <div class="single-hero-items set-bg" data-setbg="../img/hero-2.jpg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-5">
+                        <span>Bag,kids</span>
+                        <h1>Black friday</h1>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                            incididunt ut labore et dolore
+                        </p>
+                        <a asp-action="index" asp-controller="Shop" class="primary-btn">Shop Now</a>
+                    </div>
+                </div>
+                <div class="off-card">
+                    <h2>Sale <span>50%</span></h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Banner Section Begin -->
+<div class="banner-section spad d-none d-lg-block">
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-lg-4">
+                <div class="single-banner">
+                    <a asp-controller="Collection" asp-action="Index" asp-route-type="Male">
+                        <img src="../img/banner-1.jpg" alt="">
+
+                        <div class="inner-text">
+                            <h4>Men’s</h4>
+                        </div>
+
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="single-banner">
+                    <a asp-controller="Collection" asp-action="Index" asp-route-type="Female">
+                        <img src="~/img/banner-2.jpg" alt="">
+                        <div class="inner-text">
+                            <h4>Women’s</h4>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="single-banner">
+                    <a asp-controller="Collection" asp-action="Index" asp-route-type="Child">
+                        <img src="../img/banner-3.jpg" alt="">
+                        <div class="inner-text">
+                            <h4>Kid’s</h4>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Banner Section End -->
+<section class="women-banner spad">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="product-large set-bg" data-setbg="../img/products/women-large.jpg">
+                    <h2>Women’s</h2>
+                    <a href="#">Discover More</a>
+                </div>
+            </div>
+            <div class="col-lg-8 offset-lg-1">
+                <div class="filter-control">
+                    <ul>
+                        <li class="active" id="SareeLink">Sarees</li>
+                        <li id="ShirtLink">Shirts</li>
+                    </ul>
+                </div>
+                <div id="sarees">
+                    <div class="product-slider owl-carousel">
+
+                        @for (int i = 0; i < Model.Top5Sarees.Count; i++)
+                        {
+                            @await Component.InvokeAsync("SingleProduct", new { Id = Model.Top5Sarees[i].ProductId })
+                        }
+
+                    </div>
+                </div>
+                <div id="shirts" style="display:none">
+                    <div class="product-slider owl-carousel">
+
+                        @for (int i = 0; i < Model.Top5Shirt.Count; i++)
+                        {
+
+                            @await Component.InvokeAsync("SingleProduct", new { Id = Model.Top5Shirt[i].ProductId })
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="hero-section">
+    <div id="dvProductList" class="row">
+        @for (int i = 0; i < Model.First12Product.Count; i++)
+        {
+            var Imageid = @Model.First12Product[i].productImage.First();
+
+            var photoPath = "../Images/" + (Imageid.FileName ?? "noimage.jpg");
+
+
+            <ul class=" col-lg-4 col-xl-3 col-md-6 col-sm-6 col-xs-12">
+                <div class="product-item" style="box-shadow: 0px 0px 0px 1px #eee; padding: 1rem 1rem 1rem 1rem; border-radius: 4px; text-align: center;">
+                    <div class="pi-pic">
+                        <span class="imagename">
+                            <a href="@Url.Action("ProductDetails","ProductInfo", new { Id = @Model.First12Product[i].productId })">
+                                <img src="@photoPath" alt="" class="product-grid__img">
+                            </a>
+                        </span>
+                        <div class="icon">
+                            <i class="icon_heart_alt"></i>
+                        </div>
+                        <ul>
+                            @{
+                                var product = @Model.First12Product[i];
+                            }
+                            <span class="addTocart">
+                                <li class="w-icon active" id="cartId" onclick="liClick(@Model.First12Product[i].productId)"> <a style="background: #e7ab3c; color: #ffffff;"><i class="icon_bag_alt"></i></a></li>
+                            </span>
+
+                            <li class="quick-view"><span class="quickview"><a asp-action="ProductDetails" asp-controller="ProductInfo" asp-route-id="@Model.First12Product[i].productId">+ Quick View</a></span></li>
+                            <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="pi-text">
+                        <div class="catagory-name"><span class="categoryName">@Model.First12Product[i].CategoryName</span></div>
+                    </div>
+                    <div class="boxadded">
+                        <a style="text-align:center">
+                            <h5><span class="shortdisc">@Model.First12Product[i].shortDescription</span></h5>
+                        </a>
+                        @if (@Model.First12Product[i].discount == 0)
+                        {
+                            <div class="product-price" style="font-size: 20px;font-weight: 700;color: #e7ab3c;text-align: center;">
+                                ₹ <span class="price">@Model.First12Product[i].price</span>
+                            </div>
+
+                        }
+                        else
+                        {
+                            <span class="product-grid__price" style="font-size: 20px;font-weight: 700">
+                                <strike style="color: gray">
+                                    ₹<span class="price">@Model.First12Product[i].price</span>
+                                </strike>&nbsp;
+                                <span style="color: #e7ab3c;">₹<span class="discountPrice">@Model.First12Product[i].discountPrice.ToString("0.00")</span></span>
+                                <span style="color: gray"> (<span class="discount">@Model.First12Product[i].discount</span>% off)</span>
+
+                            </span>
+                        }
+                    </div>
+                </div>
+            </ul>
+
+        }
+    </div>
+    <div style="padding-left: 50% ;display:none">
+        <img id="loader" alt="" src="../img/loading.gif" style="height: 50px; " />
+
+    </div>
+
+</section>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#SareeLink").click(function () {
+
+                $("li").removeClass("active");
+                $("#sarees").show();
+                $("#shirts").hide();
+                $("#SareeLink").addClass("active");
+            });
+            $("#ShirtLink").click(function () {
+
+                $("li").removeClass("active");
+                $("#sarees").hide();
+                $("#shirts").show();
+                $("#ShirtLink").addClass("active");
+            });
+        });
+    </script>
+
+
+
+
+    <script>
+      var pageindex = 2;
+        var NoMoredata = false;
+        var inProgress = false;
+        var pagasize = 12;
+
+        var pageCount;
+        $(window).scroll(function () {
+            if ($(window).scrollTop() > Number($(this.document).height()) / 2 && !NoMoredata && !inProgress) {
+                if (pageindex == 2 || pageindex <= pageCount) {
+                    inProgress = true;
+                    $("#loader").show();
+                    $.post("@Url.Action("GetAllProduct","home")", {
+                        "pageindex": pageindex, "pagasize": pagasize
+                    },
+                        function (data) {
+                            if (data != null) {
+                                if (Object.keys(data).length != 0) {
+                                    pageCount = data[0].pageCount;
+                                    pageindex = pageindex + 1;
+                                    console.log(data);
+                                    $.each(data, function (i, item) {
+                                        var ul = $("#dvProductList ul").eq(0).clone(true);
+                                        $(".imagename", ul).html('<a href="/ProductInfo/ProductDetails/' + item.productImage[0].productId + '"> <img  src="../images/' + item.productImage[0].fileName + '" alt="" class="product-grid__img"  ></a>');
+
+                                        $(".shortdisc", ul).html(item.shortDescription);
+                                        $(".categoryName", ul).html(item.categoryName);
+                                        var discount = item.discount;
+                                        if (discount == 0) { $(".price", ul).html(item.price); }
+                                        else {
+                                            $(".price", ul).html(item.price);
+                                            $(".discount", ul).html(item.discount);
+                                            $(".quickview", ul).html('<a href = "/ProductInfo/ProductDetails/' + item.productImage[0].productId + '" >+ Quick View</a>');
+                                            $(".addTocart", ul).html('<li class="w-icon active" id="cartId" onclick="liClick(' + item.productId + ')"> <a style="background: #e7ab3c; color: #ffffff;"><i class="icon_bag_alt"></i></a></li>');
+                                            $(".discountPrice", ul).html(item.discountPrice);
+                                        }
+
+                                        $("#dvProductList").append(ul);
+
+                                    });
+
+                                    $("#loader").hide();
+
+                                }
+                            }
+                            inProgress = false;
+                        }
+                    );
+                }
+            }
+        });
+
+
+    </script>
+    <link href="~/css/Demo.css" rel="stylesheet" />
+}

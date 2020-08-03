@@ -1,0 +1,45 @@
+
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+<li>
+    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+    {
+        <a asp-action="Index" asp-controller="Administration">Admin</a>
+
+    }
+    else
+    {
+        <a href="#">Users</a>
+    }
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <form asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post" id="logoutForm" class="navbar-right">
+            <ul class="dropdown">
+                <li>
+                    <a title="Manage">Hello @UserManager.GetUserAsync(User).Result.FirstName @UserManager.GetUserAsync(User).Result.LastName!</a>
+                </li>
+                @*<li>
+            <button type="submit" class="btn btn-link navbar-btn navbar-link">Logout</button>
+        </li>*@
+
+                <li><a asp-controller="ShoppingCart" asp-action="Index">Go To Cart</a></li>
+                <li><a asp-controller="Account" asp-action="YourOrders">My Orders</a></li>
+                <li><a asp-controller="Account" asp-action="ChangePassword">Change Password</a></li>
+                <li><a asp-controller="Account" asp-action="Logout">Logout</a></li>
+            </ul>
+        </form>
+    }
+    else
+    {
+        <ul class="dropdown">
+
+            <li><a asp-controller="ShoppingCart" asp-action="Index">Go To Cart</a></li>
+            <li><a asp-controller="Account" asp-action="Register">Register</a></li>
+            <li><a asp-controller="Account" asp-action="Login">Login</a></li>
+        </ul>
+    }
+</li>

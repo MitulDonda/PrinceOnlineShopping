@@ -1,0 +1,196 @@
+﻿@model List<Order>
+@{
+    ViewData["Title"] = "Order List";
+}
+<a asp-action="CreateDocument" asp-controller="OrderList">Download Doc</a>
+<div style="padding:10px;">
+    <table id="maintable" class="table">
+        <thead>
+            <tr>
+                <th>
+                    OrderId
+                </th>
+                <th>
+                    FirstName
+                </th>
+                <th>
+                    LastName
+                </th>
+                <th>
+                    Address1
+                </th>
+                <th>
+                    Address2
+                </th>
+                <th>
+                    Zipcode
+                </th>
+                <th>
+                    City
+                </th>
+                <th>
+                    State
+                </th>
+                <th>
+                    Country
+                </th>
+                <th>
+                    PhotneNumber
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Total item
+                </th>
+                <th>
+                    OrderType
+                </th>
+                <th>
+                    OrderTotal
+                </th>
+                <th>
+                    OrderDataTime
+                </th>
+                <th>
+                    OrderType
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                var color = (@Model[i].OrderType == "onlinePayment") ? "Red" :
+                              (@Model[i].OrderType == "codpayment") ? "Blue" :
+                              (@Model[i].OrderType == "FailOnlinePayment") ? "Red" :
+                              (@Model[i].OrderType == "DoneOnlinepayment") ? "Green" : "Black";
+                <tr>
+
+                    <td>
+                        @Model[i].OrderId
+                    </td>
+                    <td>
+                        @Model[i].FirstName
+                    </td>
+                    <td>
+                        @Model[i].LastName
+                    </td>
+                    <td>
+                        @Model[i].AddressLine1
+                    </td>
+                    <td>
+                        @Model[i].AddressLine2
+                    </td>
+                    <td>
+                        @Model[i].ZipCode
+                    </td>
+                    <td>
+                        @Model[i].City
+                    </td>
+                    <td>
+                        @Model[i].State
+                    </td>
+                    <td>
+                        @Model[i].Country
+                    </td>
+                    <td>
+                        @Model[i].PhoneNumber
+                    </td>
+                    <td>
+                        @Model[i].Email
+                    </td>
+                    <td>
+                        @Model[i].TotalItem
+                    </td>
+                    <td>
+                        <table id="internalTable" class="beta table-bordered" style="width:400px">
+                            @foreach (OrderDetail item in Model[i].OrderLines)
+                            {
+                                var discPrice = item.Product.Price - item.Product.Price * item.Product.Discount / 100;
+                                <tr>
+                                    <td> @item.Product.ProductId : @item.Product.ProductName </td>
+                                    <td> @item.Product.ShortDescription  </td>
+                                    <td>@discPrice.ToString("0.00")</td>
+                                </tr>
+                            }
+                        </table>
+                    <td style="color:green">
+                        @Model[i].OrderTotal
+                    </td>
+                    <td>
+                        @Model[i].OrderPlacedDate
+                    </td>
+                    <td style="color:@color">
+                        @Model[i].OrderType
+                    </td>
+                    <td id="confirmMsg_@Model[i].OrderId">
+                        @if (@Model[i].isConfirm == true)
+                        {
+                            <span style="color:green"> <i class="fa fa-check" style="color:green"></i> Confirmed</span>
+                            <a asp-action="CreateDocument" asp-controller="OrderList" asp-route-orderId="@Model[i].OrderId" class="btn btn-success"> Receipt</a>
+                        }
+                        else
+                        {
+                            <button onclick='confimButtonClick("@Model[i].OrderId")' class="btn btn-info">Confirm</button>
+                            <button onclick='cancelButtonClick("@Model[i].OrderId")' class="btn btn-danger">Cancel</button>
+
+                        }
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            $('#maintable').dataTable({
+                "pageLength": 20,
+                "order": [[14, "desc"]],
+                dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                buttons: [
+                    'excel'
+                ]
+            });
+        });
+        $("#mainDiv").removeClass("container");
+
+        function confimButtonClick(orderId) {
+            $.post("/Admin/OrderList/ConfimOrder", {
+                "orderId": orderId
+            },
+                function (data) {
+                    if (data > 0) {
+                        $("#confirmMsg_" + orderId).html('<span style="color: green" class="confirmMsg"> <i class="fa fa - check" style="color: green"></i> Confirmed &nbsp; <a class="btn btn-success" href="/Admin/OrderList/CreateDocument?orderId=' + orderId + '">Receipt</a></span>');
+                    }
+                });
+        }
+        function cancelButtonClick(orderId) {
+            $.post("/Admin/OrderList/CancelOrder", {
+                "orderId": orderId
+            },
+                function (data) {
+                    if (data > 0) {
+                                  $("#confirmMsg_" + orderId).html('<span style="color: red" class="confirmMsg"> Cancelled</span>');
+                    }
+                });
+        }
+
+    </script>
+    <style>
+        .beta tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+}

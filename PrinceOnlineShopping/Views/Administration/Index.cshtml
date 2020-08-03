@@ -1,0 +1,72 @@
+﻿
+
+<br />
+Date :
+<input type="text" name="daterange" class="form-control col-3" value="@DateTime.Now" />
+StartDate : <span class="startdate"></span>
+<br />
+Enddate : <span class="enddate"></span>
+<br />
+<h3>Total order between  <span class="startdate text-info"></span> and   <span class="enddate text-info"></span> :: <span class="ordercount text-success"></span> </h3>
+<h3>Total Cencel order between  <span class="startdate text-info"></span> and   <span class="enddate text-info"></span> :: <span class="cancelordercount text-danger"></span> </h3>
+<h3>Total product ::  <span class="productcount text-success"></span></h3>
+
+@section Scripts{
+
+    <script>
+        $(function () {
+            $('input[name="daterange"]').daterangepicker({
+                opens: 'left'
+            }, function (start, end, label) {
+
+                $(".startdate").html(start.format('YYYY-MM-DD'));
+                $(".enddate").html(end.format('YYYY-MM-DD'))
+                OrderCount(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+                cencelOrderCount(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+                //        console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+            });
+        });
+
+        $(document).ready(function () {
+            ProductCount();
+        });
+
+        function OrderCount(startdate, enddate) {
+            $.post("/Administration/OrderCount", {
+                "startdate": startdate,
+                "enddate": enddate
+            },
+                function (data) {
+                    if (data > 0) {
+                        $(".ordercount").html(data);
+                    }
+                });
+        }
+        function cencelOrderCount(startdate, enddate) {
+            $.post("/Administration/CencelOrderCount", {
+                "startdate": startdate,
+                "enddate": enddate
+            },
+                function (data) {
+                    if (data > 0) {
+                        $(".cancelordercount").html(data);
+                    }
+                });
+        }
+        function ProductCount() {
+            $.post("/Administration/TotalProductCount", {
+
+            },
+                function (data) {
+                    if (data > 0) {
+                        $(".productcount").html(data);
+                    }
+                });
+        }
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+}
+

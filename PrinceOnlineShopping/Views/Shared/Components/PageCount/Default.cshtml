@@ -1,0 +1,94 @@
+﻿@model List<OnScrollProductViewModel>
+@*@{
+        var Folderpath = "../Images/";
+    }*@
+@if (@ViewBag.device == "Web")
+{
+    <li class="cart-icon" id="shopcartLi">
+        <a asp-action="Index" asp-controller="ShoppingCart">
+            <i class="icon_bag_alt"></i>
+            <span class="totalcount">@ViewBag.count</span>
+        </a>
+
+        @*<div class="cart-hover">
+                <div class="select-items">
+                    <table id="tableViewCart">
+                        <tbody>
+                            @if (@ViewBag.count > 2)
+                            {
+                                <tr>
+                                    <td>
+                                        <span class="more2Product"> @ViewBag.count Products are added in cart.Please visit cart for more deatils.</span>
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                @for (int i = 0; i < Model.Count; i++)
+                                {
+                                    var photoPath = @Folderpath + (Model[i].productImage.First().FileName ?? "noimage.jpg");
+
+                                    <tr>
+                                        <td class="si-pic"><span class="imageclass"><img src="@photoPath" alt="" style="height:100px; width:100px"></span></td>
+                                        <td class="si-text">
+                                            <div class="product-selected">
+                                                <p> <span class="cartpriceclass">$ @Model[i].discountPrice.ToString("0.00")</span></p>
+                                                <h6> <span class="cartdescclass">@Model[i].shortDescription</span></h6>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                }
+
+                            }
+
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="select-total">
+                    <span>total:</span>
+                    <h5 class="carttotalprice">$ @ViewBag.totalPrice.ToString("0.00")</h5>
+                </div>
+                <div class="select-button">
+                    <a asp-action="Index" asp-controller="ShoppingCart" class="primary-btn view-card">VIEW CARD</a>
+                    <a href="#" class="primary-btn checkout-btn">CHECK OUT</a>
+                </div>
+            </div>*@
+    </li>
+
+    <li class="cart-price totalcartprice">₹@ViewBag.totalPrice.ToString("0.0")</li>
+
+}
+else if (@ViewBag.device == "Mobile")
+{
+    <div class="offset-2">
+        <a asp-action="Index" asp-controller="ShoppingCart" class="notification">
+            <i class="fa fa-shopping-basket" style="font-size:28px"></i>
+            <span class="badge totalcount">@ViewBag.count</span>
+        </a>
+        <a class="nav-item totalcartprice">₹@ViewBag.totalPrice.ToString("0.0")</a>
+    </div>
+}
+<style>
+
+
+    .notification {
+        color: #e7ab3c;
+        position: relative;
+        display: inline-block;
+        border-radius: 2px;
+    }
+
+
+
+        .notification .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            padding: 2px 6px;
+            border-radius: 50%;
+            background-color: red;
+            color: white;
+        }
+</style>

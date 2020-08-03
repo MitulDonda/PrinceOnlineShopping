@@ -1,0 +1,67 @@
+﻿@model Product
+@{
+    var FolderPath = "../Images/";
+    IEnumerator<ProductImage> e1 = Model.ProductImage.GetEnumerator();
+    e1.MoveNext();
+
+    var photoPath = FolderPath + (e1.Current.FileName ?? "noimage.jpg");
+}
+    <div class="product-item">
+        <div class="pi-pic">
+            <a href="@Url.Action("ProductDetails","ProductInfo", new { Id = @Model.ProductId })">
+                <img src="@photoPath" alt="" style="height:340px;width:270px">
+            </a>
+            <div class="icon">
+                <i class="icon_heart_alt"></i>
+            </div>
+            <ul>
+                <li class="w-icon active" onclick="liClick(@Model.ProductId)"><a  style="background: #e7ab3c; color: #ffffff;"><i class="icon_bag_alt"></i></a></li>
+                <li class="quick-view"><a asp-action="ProductDetails" asp-controller="ProductInfo" asp-route-id="@Model.ProductId">+ Quick View</a></li>
+                <li class="w-icon"><a href="whatsapp://send?text=The text to share!" data-action="share/whatsapp/share"><i class="fa fa-random"></i></a></li>
+            </ul>
+        </div>
+        <div class="pi-text">
+            <div class="catagory-name">@Model.Category.CategoryName</div>
+        </div>
+        <a style="text-align:center">
+            <h5>@Model.ShortDescription</h5>
+        </a>
+        @if (@Model.Discount == 0)
+        {
+            <div class="product-price" style="font-size: 20px;font-weight: 700;color: #e7ab3c;text-align: center;">
+                ₹ <span class="price">@Model.Price</span>
+            </div>
+
+        }
+        else
+        {
+            var discountPrice = @Model.Price - @Model.Price * @Model.Discount / 100;
+            <span class="product-grid__price" style="font-size: 20px;font-weight: 700">
+                <strike style="color: gray">
+                    ₹<span class="price">@Model.Price</span>
+                </strike>&nbsp;
+                <span style="color: #e7ab3c;">₹<span class="discountPrice">@discountPrice.ToString("0.00")</span></span>
+                <span style="color: gray"> (<span class="discount">@Model.Discount</span>% off)</span>
+
+            </span>
+        }
+    </div>
+@section Scipts {
+    <style>
+        .product-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: #e7ab3c;
+            text-align: center;
+        }
+
+        .catagory-name {
+            font-size: 10px;
+            color: #b2b2b2;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+    </style>
+}

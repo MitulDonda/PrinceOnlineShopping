@@ -1,0 +1,130 @@
+﻿@model Comment
+@{
+    ViewData["Title"] = "ContactUs";
+    ViewData["PageName"] = "ContactUs";
+    var successMsg = ViewData["msg"];
+}
+@if (successMsg != null)
+{
+    <h4 class=text-success>@successMsg</h4>
+}
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+<section class="contact-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5">
+                <div class="contact-title">
+                    <h4>Contacts Us</h4>
+                    <p>
+                        From Manufacturer to Customer.
+                        <br />So, Cheaper than other.
+                        No hidden charges.<br />
+                        Happy Shopping.
+                    </p>
+
+                </div>
+                <div class="contact-widget">
+                    <div class="cw-item">
+                        <div class="ci-icon">
+                            <i class="ti-location-pin"></i>
+                        </div>
+                        <div class="ci-text">
+                            <span>Address:</span>
+                            <p>353-355 Anjani, Parvat Patiya, surat</p>
+                        </div>
+                    </div>
+                    <div class="cw-item">
+                        <div class="ci-icon">
+                            <i class="ti-mobile"></i>
+                        </div>
+                        <div class="ci-text">
+                            <span>Phone:</span>
+                            <p>+91 9825753462</p>
+                        </div>
+                    </div>
+                    <div class="cw-item">
+                        <div class="ci-icon">
+                            <i class="ti-email"></i>
+                        </div>
+                        <div class="ci-text">
+                            <span>Email:</span>
+                            <p>princedigitalsaree@gmail.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 offset-lg-1">
+                <div class="contact-form">
+                    <div class="leave-comment">
+                        <h4>Leave A Comment</h4>
+                        <p>Our staff will call back later and answer your questions.</p>
+                        <form method="post" asp-action="AddComments" class="comment-form">
+
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <div class="row">
+                                <div class="col-lg-6">
+
+                                    <input asp-for="Name" placeholder="Your Name">
+                                </div>
+                                <div class="col-lg-6">
+
+                                    <input asp-for="Email" placeholder="Your Email Address">
+                                </div>
+                                <div class="col-lg-12">
+
+                                    <textarea placeholder="Your message" asp-for="CommentName"></textarea>
+
+                                    <button type="submit" class="site-btn">Send message</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="row">
+            <div class="col-12">
+                <div class="contact-title" style="text-align:center">
+                    <h4>CEO</h4>
+                </div><div class="row">
+                    <div class="col-4 contact-widget">
+                        <div class="cw-item">
+                            <img src="~/img/pakabhai.jpg" />
+
+                            <div class="ci-text" style="padding-top:10px">
+                                <p>Prakashbhai Vora</p>
+                                <span>Marketing & Delivery Expert</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 contact-widget">
+                        <div class="cw-item">
+                            <img src="~/img/vinubhai.jpg" />
+
+                            <div class="ci-text" style="padding-top:10px">
+                                <p>Vinubhai Donda</p>
+                                <span>Finacial & Management Expert</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 contact-widget">
+                        <div class="cw-item">
+                            <img src="~/img/chimanlal.jpg" />
+
+                            <div class="ci-text" style="padding-top:10px">
+                                <p>Chimanlal Barvaliya</p>
+                                <span>Marketing & Management Expert</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

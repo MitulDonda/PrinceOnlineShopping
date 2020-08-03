@@ -1,0 +1,121 @@
+﻿<div id="dvProductList" class="row">
+    <ul class=" col-lg-3 col-md-3 col-sm-6 col-xs-6">
+        <div class="product-item">
+            <div class="pi-pic">
+                <span class="imagename">
+
+                </span>
+                <div class="icon">
+                    <i class="icon_heart_alt"></i>
+                </div>
+                <ul>
+                    <li class="w-icon active"><a href="#" style="background: #e7ab3c; color: #ffffff;"><i class="icon_bag_alt"></i></a></li>
+                    <li class="quick-view"><a asp-action="AddToCart">+ Quick View</a></li>
+                    <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
+                </ul>
+            </div>
+            <div class="pi-text">
+                <div class="catagory-name"><span class="catname"></span></div>
+            </div>
+            <a style="text-align:center">
+                <h5><span class="shortdisc"></span></h5>
+            </a>
+            <div class="product-price" style="font-size: 20px;font-weight: 700;color: #e7ab3c;text-align: center;">
+                ₹ <span class="price"></span>
+            </div>
+        </div>
+    </ul>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#SareeLink").click(function () {
+
+                $("li").removeClass("active");
+                $("#sarees").show();
+                $("#shirts").hide();
+                $("#SareeLink").addClass("active");
+            });
+            $("#ShirtLink").click(function () {
+
+                $("li").removeClass("active");
+                $("#sarees").hide();
+                $("#shirts").show();
+                $("#ShirtLink").addClass("active");
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        var pageIndex = 1;
+        var pageCount;
+        $(window).scroll(function () {
+            if ($(window).scrollTop() ) {
+                GetRecords();
+            }
+        });
+        $(document).ready(function () {
+            GetRecords();
+        });
+        function GetRecords() {
+            pageIndex++;
+            if (pageIndex == 2) {
+                $("#loader").show();
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("GetAllProduct","Home")",
+
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                        
+                      $.each(data, function (i, item) {
+
+                          var ul = $("#dvProductList ul").eq(0).clone(true);
+                          $(".imagename", ul).html('<img  src="../images/' + item.productImage[0].fileName + '" alt="" style="height:340px;width:270px">');
+                          $(".catname", ul).html(item.category.categoryName);
+                          $(".shortdisc", ul).html(item.shortDescription);
+                          $(".price", ul).html(item.price);
+
+                          $("#dvProductList").append(ul);
+
+                        });
+                        pageIndex++;
+                    },
+                    failure: function (response) {
+                        alert(response.d);
+                    },
+                    error: function (response) {
+                        alert(response.d);
+                    }
+                });
+
+                $("#loader").hide();
+            }
+        }
+
+        function OnSuccess(response) {
+            var xmlDoc = $.parseXML(response.d);
+            var xml = $(xmlDoc);
+            pageCount = parseInt(xml.find("PageCount").eq(0).find("PageCount").text());
+            var customers = xml.find("Product");
+            customers.each(function () {
+                var customer = $(this);
+                var ul = $("#dvCustomers ul").eq(0).clone(true);
+                $(".price", ul).html(customer.find("price").text());
+                $(".discountPrice", ul).html(customer.find("discountPrice").text());
+                $(".productName", ul).html(customer.find("productName").text());
+                $(".discount", ul).html(customer.find("discount").text());
+                $(".designNumber", ul).html(customer.find("designNumber").text());
+                $(".shortdesc", ul).html(customer.find("shortdesc").text());
+                $(".imagename", ul).html('<img src="images/' + customer.find("imagename").text() + '" alt="Img" class="product-grid__img" />');
+                $(".btn1", ul).html('<span id="tobtn1"><a id="' + customer.find("productId").text() + '" class="product-grid__btn product-grid__add-to-cart lstbutton"   ><i class="fa  fa-cart-arrow-down" >&nbsp;Add To Cart </i ></span></a>');
+                $(".btn2", ul).html('<span id="tobtn2"><a id="' + customer.find("productId").text() + '" class="product-grid__btn product-grid__view lstbutton"   ><i class="fa  fa-eye" >&nbsp;View Details </i > </span></a>');
+
+                $("#dvCustomers").append(ul);
+            });
+            $("#loader").hide();
+        }
+    </script>
+}

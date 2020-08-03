@@ -1,0 +1,187 @@
+﻿@model ShopIndexViewModel
+@{
+    ViewData["Title"] = "Shop";
+    ViewData["PageName"] = "Shop";
+}
+
+<div class="breacrumb-section">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="breadcrumb-text">
+                <a asp-action="Index" asp-controller="Home"><i class="fa fa-home"></i> Home</a>
+                <span>Shop</span>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6  col-lg-3 col-md-3 filter-control" id="filterdropdown">
+        <span style="font-size: 16px; color: black;">Filter : &nbsp;</span>
+        <select class="filter btn btn-default dropdown-toggle border">
+            <option value="newarriaval" selected="selected">New Arrival</option>
+            <option value="priceltoh">Price Low to High</option>
+            <option value="pricehtol">Price High to Low</option>
+            <option value="discount">Discount</option>
+        </select>
+    </div>
+    <div class="filter-control  col-lg-8 col-md-8 col-sm-6">
+
+        <ul class="category" style="text-align:center">
+            @for (int i = 0; i < Model.CategoryList.Count; i++)
+            {
+                var Id = Model.CategoryList[i].CategoryName + "Link";
+                <li id="@Id" class="@(@i == 0 ? "active" : "")">@Model.CategoryList[i].CategoryName</li>
+            }
+
+        </ul>
+    </div>
+</div>
+<span class="catName" style="display:none">@Model.CategoryList[0].CategoryName</span>
+<div id="dvProductList" class="row">
+</div>
+
+@section Scripts {
+    <script>
+
+        var pageCount;
+        var pageindex = 1;
+        var NoMoredata = false;
+        var inProgress = false;
+        var pagasize = 12;
+        $(document).ready(function () {
+            $('.category > li').click(function () {
+                $("#dvProductList").empty();
+                $('.category > li').removeClass();
+                $(this).addClass('active');
+
+                //var kvp = document.URL.split('#');
+                //var finalurl = kvp[0] + "#" + $(this).text();
+                //document.location.href = finalurl;
+                $(".catName").html($(this).text());
+                LoadInitData($(this).text());
+
+            });
+
+            LoadInitData($(".catName").text());
+
+            function URLRefector() {
+                var splitURL = document.URL.split('#');
+                if (splitURL[1] != null) {
+                    id = "#"+splitURL[1]+"Link";
+                    $(id).click();
+
+
+                }
+            }
+
+        });
+
+             function LoadInitData(catName)
+            {
+                pageindex = 1;
+                if (!NoMoredata && !inProgress)
+                {
+                      if (pageindex == 1) {
+                    inProgress = true;
+                    $("#loader").show();
+                    $.post("@Url.Action("GetAllProductByCategory", "Shop")",
+                        { "pageindex": pageindex, "pagasize": pagasize, "catName": catName, "sortby": $("#filterdropdown option:selected").attr('value')},
+                        function (data) {
+                            if (data != null) {
+                                if (Object.keys(data).length != 0) {
+                                    pageCount = data[0].pageCount;
+                                    pageindex = pageindex + 1;
+                                    $.each(data, function (i, item) {
+                                        var ul1 = ' <ul class=" col-lg-4 col-xl-3 col-md-6 col-sm-6 col-xs-12">  <div class="product-item" style="box-shadow: 0px 0px 0px 1px #eee; padding: 1rem 1rem 1rem 1rem; border-radius: 4px; text-align: center;">                    <div class="pi-pic"><span class="imagename"></span>    <div class="icon">        <i class="icon_heart_alt"></i>    </div>    <ul>       <span class="addTocart">     <li class="w-icon active"><a href="#" style="background: #e7ab3c; color: #ffffff;"><i class="icon_bag_alt"></i></a></li>    </span>                     <li class="quick-view"><span class="quickview"></span></li>            <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>    </ul></div><div class="pi-text">    <div class="catagory-name"><span class="categoryName"></span></div></div><div class="boxadded">    <a style="text-align:center">        <h5><span class="shortdisc"></span></h5>    </a>             <span class="product-grid__price" style="font-size: 20px;font-weight: 700">            <strike style="color: gray">                ₹<span class="price"></span>            </strike>&nbsp;            <span style="color: #e7ab3c;">₹<span class="discountPrice"></span></span>            <span style="color: gray"> (<span class="discount"></span>% off)</span>        </span>                                            </div>                </div>            </ul>';
+                                        var ul = $.parseHTML(ul1);
+                                        $(".imagename", ul).html('<a href="/ProductInfo/ProductDetails/' + item.productImage[0].productId + '"> <img  src="../images/' + item.productImage[0].fileName + '" alt="" class="product-grid__img"  ></a>');
+
+                                        $(".shortdisc", ul).html(item.shortDescription);
+                                        $(".categoryName", ul).html(item.categoryName);
+                                        $(".addTocart", ul).html('     <li class="w-icon active"  onclick="liClick(' + item.productId + ')"><a  style="background: #e7ab3c; color: #ffffff;"><i class="icon_bag_alt"></i></a></li>    </span> ');
+
+                                        var discount = item.discount;
+                                        if (discount == 0) { $(".price", ul).html(item.price); }
+                                        else {
+                                            $(".price", ul).html(item.price);
+                                            $(".discount", ul).html(item.discount);
+                                            $(".quickview", ul).html('<a href = "/ProductInfo/ProductDetails/' + item.productImage[0].productId + '" >+ Quick View</a>');
+                                            $(".discountPrice", ul).html(item.discountPrice);
+                                        }
+
+                                        $("#dvProductList").append(ul);
+
+                                    });
+
+                                    $("#loader").hide();
+                                   
+                                }
+                               
+                            }
+                            inProgress = false;
+                        }
+                    );
+                }
+                }
+            }
+
+        $("#filterdropdown").change(function () {
+            $("#dvProductList").empty();
+            LoadInitData($(".catName").text());
+
+        });
+    </script>
+
+    <script>
+
+
+        $(window).scroll(function () {
+            if ($(window).scrollTop() > Number($(this.document).height()) / 2 && !NoMoredata && !inProgress) {
+                if (pageindex == 2 || pageindex <= pageCount) {
+                    inProgress = true;
+                    $("#loader").show();
+                    $.post("@Url.Action("GetAllProductByCategory", "Shop")",
+                        { "pageindex": pageindex, "pagasize": pagasize, "catName": $(".catName").text(),"sortby": $("#filterdropdown option:selected").attr('value')},
+                        function (data) {
+                            if (Object.keys(data).length != 0) {
+                                if (data != null) {
+                                    pageCount = data[0].pageCount;
+                                    pageindex = pageindex + 1;
+                                    $.each(data, function (i, item) {
+                                        var ul1 = ' <ul class=" col-lg-4 col-xl-3 col-md-6 col-sm-6 col-xs-12">  <div class="product-item" style="box-shadow: 0px 0px 0px 1px #eee; padding: 1rem 1rem 1rem 1rem; border-radius: 4px; text-align: center;">                    <div class="pi-pic"><span class="imagename"></span>    <div class="icon">        <i class="icon_heart_alt"></i>    </div>    <ul>       <span class="addTocart">     <li class="w-icon active"><a href="#" style="background: #e7ab3c; color: #ffffff;"><i class="icon_bag_alt"></i></a></li>    </span>                     <li class="quick-view"><span class="quickview"></span></li>            <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>    </ul></div><div class="pi-text">    <div class="catagory-name"><span class="categoryName"></span></div></div><div class="boxadded">    <a style="text-align:center">        <h5><span class="shortdisc"></span></h5>    </a>             <span class="product-grid__price" style="font-size: 20px;font-weight: 700">            <strike style="color: gray">                ₹<span class="price"></span>            </strike>&nbsp;            <span style="color: #e7ab3c;">₹<span class="discountPrice"></span></span>            <span style="color: gray"> (<span class="discount"></span>% off)</span>        </span>                                            </div>                </div>            </ul>';
+                                        var ul = $.parseHTML(ul1);
+                                        $(".imagename", ul).html('<a href="/ProductInfo/ProductDetails/' + item.productImage[0].productId + '"> <img  src="../images/' + item.productImage[0].fileName + '" alt="" class="product-grid__img"  ></a>');
+
+                                        $(".shortdisc", ul).html(item.shortDescription);
+                                        $(".categoryName", ul).html(item.categoryName);
+                                        $(".addTocart", ul).html('     <li class="w-icon active"  onclick="liClick(' + item.productId + ')"><a  style="background: #e7ab3c; color: #ffffff;"><i class="icon_bag_alt"></i></a></li>    </span> ');
+
+                                        var discount = item.discount;
+                                        if (discount == 0) { $(".price", ul).html(item.price); }
+                                        else {
+                                            $(".price", ul).html(item.price);
+                                            $(".discount", ul).html(item.discount);
+                                            $(".quickview", ul).html('<a href = "/ProductInfo/ProductDetails/' + item.productImage[0].productId + '" >+ Quick View</a>');
+                                            $(".discountPrice", ul).html(item.discountPrice);
+                                        }
+
+                                        $("#dvProductList").append(ul);
+
+                                    });
+
+                                    $("#loader").hide();
+                                   
+                                }
+                              
+                            }
+                            inProgress = false;
+                        }
+                    );
+                }
+            }
+        });
+    </script>
+}

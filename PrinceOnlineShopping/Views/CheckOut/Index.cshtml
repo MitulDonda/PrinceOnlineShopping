@@ -1,0 +1,155 @@
+﻿@model CheckOutViewModel
+@{
+    ViewData["Title"] = "Check Out";
+    ViewData["PageName"] = "Check Out";
+   var shipingcharge= ViewData["ShippingCharge"];
+}
+
+<div class="breacrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text product-more">
+                    <a asp-action="index" asp-controller="Home"><i class="fa fa-home"></i> Home</a>
+                    <a asp-action="Index" asp-controller="Shop">Shop</a>
+                    <span>Check Out</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb Section Begin -->
+<!-- Shopping Cart Section Begin -->
+<section class="checkout-section spad">
+    <div class="container">
+        <form  method="post" asp-action="OrderPlace" class="checkout-form">
+            <div class="row">
+                <div class="col-lg-6">
+                    <span id="shopingchargespan" style="display:none">shipingcharge</span>
+                    <h4>Biiling Details</h4>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label asp-for="@Model.order.FirstName"></label>
+                            <input asp-for="@Model.order.FirstName" class="form-control" />
+                            <span asp-validation-for="@Model.order.FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label asp-for="@Model.order.LastName"></label>
+                            <input asp-for="@Model.order.LastName" class="form-control" />
+                            <span asp-validation-for="@Model.order.LastName" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-12">
+                            <label asp-for="@Model.order.AddressLine1"></label>
+                            <input asp-for="@Model.order.AddressLine1" class="form-control" />
+                            <span asp-validation-for="@Model.order.AddressLine1" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-12">
+                            <label asp-for="@Model.order.AddressLine2"></label>
+                            <input asp-for="@Model.order.AddressLine2" class="form-control" />
+                            <span asp-validation-for="@Model.order.AddressLine2" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label asp-for="@Model.order.City"></label>
+                            <input asp-for="@Model.order.City" class="form-control" />
+                            <span asp-validation-for="@Model.order.City" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label asp-for="@Model.order.ZipCode"></label>
+                            <input asp-for="@Model.order.ZipCode" class="form-control" />
+                            <span asp-validation-for="@Model.order.ZipCode" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label asp-for="@Model.order.State"></label>
+                            <input asp-for="@Model.order.State" class="form-control" />
+                            <span asp-validation-for="@Model.order.State" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label asp-for="@Model.order.Country"></label>
+                            <input asp-for="@Model.order.Country" class="form-control" />
+                            <span asp-validation-for="@Model.order.Country" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label asp-for="@Model.order.Email"></label>
+                            <input asp-for="@Model.order.Email" class="form-control" />
+                            <span asp-validation-for="@Model.order.Email" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label asp-for="@Model.order.PhoneNumber"></label>
+                            <input asp-for="@Model.order.PhoneNumber" class="form-control" />
+                            <span asp-validation-for="@Model.order.PhoneNumber" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                   
+                    <div class="place-order">
+                        <h4>Your Order</h4>
+                        <div class="order-total">
+                            <ul class="order-table">
+                                <li>Product <span>Total</span></li>
+                                @if (Model.ProductList.Count == 0)
+                                {
+                                    <li class="fw-normal">No Product Adde in cart. Please add product in cart.</li>
+                                }
+                                else
+                                {
+                                    @for (int i = 0; i < Model.ProductList.Count; i++)
+                                    {
+                                        <li class="fw-normal">@Model.ProductList[i].shortDescription  x 1 <span>₹@Model.ProductList[i].discountPrice </span></li>
+                                    }
+                                    <li></li>
+                                    <li class="fw-normal">Subtotal <span id="subtotalPrice" value="@Model.totalPrice.ToString("0.00");">₹@Model.totalPrice.ToString("0.00")</span></li>
+                                    <li  class="fw-normal" style="display:none" id="shippingCharge"> Shipping Charge<span>₹ @shipingcharge</span></li>
+                                    <li class="total-price">Total <span  id="TotalPrice">₹@Model.totalPrice.ToString("0.00")</span></li>
+                                }
+
+
+                            </ul>
+                            <div>
+                                <label class="radio-inline" for="OnlinePayment">
+                                    <input  name="order" id="OnlinePayment" type="radio" checked style="width:auto; height:auto" value="onlinePayment">Online Payment
+                                </label>
+                                <label class="radio-inline" style="padding-left: 10px;" for="CODPaymentId">
+                                    <input asp-for="order" type="radio"  id="CODPaymentId" style="width:auto; height:auto;"  value="codpayment" >Cash On Delivery
+                                </label>
+                            </div>
+                            <input asp-for="@Model.order.OrderType" type="text" id="orderType"  value="onlinePayment" style="display:none"/>
+                            <div class="order-btn">
+                                @if (Model.ProductList.Count == 0)
+                                {
+                                    <button type="submit" class="site-btn place-btn" disabled>Place Order</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="site-btn place-btn">Place Order</button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        var subtotalPrice = parseFloat($("#subtotalPrice").attr("value"));
+        $('input[type=radio][name=order]').change(function () {
+            if (this.value == 'onlinePayment') {
+                $("#orderType").val(this.value);
+                $("#shippingCharge").hide();
+               
+                $("#TotalPrice").html("₹"+subtotalPrice);
+            }
+            else if (this.value == 'codpayment') {
+                $("#orderType").val(this.value);
+                $("#shippingCharge").show();
+                var totalprice = subtotalPrice + @shipingcharge
+                $("#TotalPrice").html("₹"+totalprice);
+               
+            }
+        });
+    </script>
+}

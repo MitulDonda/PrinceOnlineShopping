@@ -1,0 +1,39 @@
+
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+@if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+{
+    <a @*asp-action="Index" asp-controller="Administration"*@ class="nav-link" id="MobUserlink">Admin <i class="fa fa-arrow-down"></i></a>
+
+}
+else
+{
+    <a class="nav-link" id="MobUserlink">User<i class="fa fa-arrow-down"></i></a>
+
+}
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="dropdown-menu" id="mobUserList">
+        <a class="dropdown-item">Hello @UserManager.GetUserAsync(User).Result.FirstName @UserManager.GetUserAsync(User).Result.LastName!</a>
+        <a asp-controller="ShoppingCart" asp-action="Index" class="dropdown-item">Go To Cart</a>
+        <a asp-controller="Account" asp-action="YourOrders" class="dropdown-item">My Orders</a>
+        <a asp-controller="Account" asp-action="ChangePassword" class="dropdown-item">Change Password</a>
+        <a asp-controller="Account" asp-action="Logout" class="dropdown-item">Logout</a>
+
+    </div>
+}
+else
+{
+    <div class="dropdown-menu" id="mobUserList">
+        <a asp-controller="ShoppingCart" asp-action="Index" class="dropdown-item">Go To Cart</a>
+        <a asp-controller="Account" asp-action="Register" class="dropdown-item">Register</a>
+        <a asp-controller="Account" asp-action="Login" class="dropdown-item">Login</a>
+    </div>
+
+
+}
+    </li>

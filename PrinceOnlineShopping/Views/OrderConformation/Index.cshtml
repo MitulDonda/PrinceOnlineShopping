@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewData["Title"] = "ConfirmOrder";
+    ViewData["PageName"] = "ConfirmOrder";
+}
+<div class="container">
+@if (@ViewBag.message != null)
+{
+    <h4 class="text-success">@ViewBag.message;</h4>
+    <br />
+    <h4 class="text-success">@ViewBag.orderId;</h4>
+    <br />
+    <h4 class="text-success">@ViewBag.DeliveryMessage;</h4>
+    <br />
+}
+else
+{
+    <h4 class="text-danger">@ViewBag.failmessage</h4>
+    <br />
+}
+
+    <a asp-action="Index" asp-controller="Home"> Return To Home</a>
+</div>
